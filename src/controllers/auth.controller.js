@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { name, email, password} = req.body;
 
         // console.log(name, email, password);
 
@@ -22,8 +22,7 @@ const registerUser = async (req, res) => {
         const user = await User.create({
             name,
             email,
-            password,
-            role
+            password
         });
 
         res.status(201).json({ message: 'User registered successfully', id: user._id, name: user.name, email: user.email, role: user.role });
@@ -51,7 +50,7 @@ const loginUser = async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(400).send('User does not exist');
+            return res.status(400).send('Email does not exist');
         }
 
         const passwordMatch = await user.comparePassword(password);
