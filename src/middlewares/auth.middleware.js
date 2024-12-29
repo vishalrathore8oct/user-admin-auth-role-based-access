@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model.js');
 
-const authMiddleware = async (req, res, next) => {
+const verifyToken = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
         if (!token) {
@@ -12,9 +12,9 @@ const authMiddleware = async (req, res, next) => {
         next();
         
     } catch (error) {
-        res.status(401).send('Access denied. Please authenticate');
+        res.status(401).send('Access denied. Invalid token');
         
     }
 }
 
-module.exports = authMiddleware;
+module.exports = verifyToken;
