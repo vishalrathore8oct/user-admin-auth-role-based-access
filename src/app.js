@@ -2,12 +2,14 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db.config.js');
 const authRoutes = require('./routes/auth.route.js');
+const cookieParser = require('cookie-parser');
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 

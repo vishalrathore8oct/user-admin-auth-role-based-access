@@ -40,7 +40,37 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
 
-    res.send('Login Page Success');
+    try {
+
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).send('Please fill all the fields');
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(400).send('User does not exist');
+        }
+
+        const passwordMatch = await user.comparePassword(password);
+
+        if (!passwordMatch) {
+            return res.status(400).send('Password does not match');
+        }
+
+        const token = jwt.sign({ id: user._id, name: user.name, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.status(200)
+            .cookie('token', token, { httpOnly: true })
+            .json({ message: 'User logged in successfully', data: { id: user._id, name: user.name, email: user.email, role: user.role } });
+
+    } catch (error) {
+
+        res.status(500).json({ message: 'Error logging in user', error });
+
+    }
 
 }
 
