@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db.config.js');
 const authRoutes = require('./routes/auth.route.js');
-const cookieParser = require('cookie-parser');
+const taskRoutes = require('./routes/task.route.js');
 
 dotenv.config();
 
@@ -14,6 +14,7 @@ app.use(express.json());
 const port = process.env.PORT || 3000;
 
 app.use('/api/auth', authRoutes);
+app.use('/api/task', taskRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello World');
