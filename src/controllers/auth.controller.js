@@ -25,7 +25,11 @@ const registerUser = async (req, res) => {
             password
         });
 
-        res.status(201).json({ message: 'User registered successfully', id: user._id, name: user.name, email: user.email, role: user.role });
+        // res.status(201).json({ message: 'User registered successfully', id: user._id, name: user.name, email: user.email, role: user.role });
+
+        // res.redirect('index', { message: 'User registered successfully', id: user._id, name: user.name, email: user.email, role: user.role });
+
+        res.redirect('/');
 
     } catch (error) {
 
@@ -61,7 +65,12 @@ const loginUser = async (req, res) => {
 
         const token = jwt.sign({ id: user._id, name: user.name, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.status(200).json({ message: 'User logged in successfully', token });
+        // res.status(200).json({ message: 'User logged in successfully', token });
+
+        // res.render('index', { message: 'User logged in successfully', token });
+
+        res.status(200).cookie('token', token, { httpOnly: true });
+        res.redirect('/');
 
     } catch (error) {
 
