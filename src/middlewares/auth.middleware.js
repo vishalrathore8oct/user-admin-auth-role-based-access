@@ -9,7 +9,7 @@ const verifyToken = async (req, res, next) => {
             return res.status(401).send('Access denied. No Cookies provided');
         }
         const token = req.cookies.token;
-        console.log(token);
+        // console.log(token);
         
 
         if (!token) {
