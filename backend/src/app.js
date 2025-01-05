@@ -4,6 +4,7 @@ const connectDB = require('./config/db.config.js');
 const authRoutes = require('./routes/auth.route.js');
 const taskRoutes = require('./routes/task.route.js');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 
 dotenv.config();
@@ -15,6 +16,10 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'));
+app.use(cors({
+    origin: 'http://127.0.0.1:5500',
+    credentials: true
+}));
 
 
 const port = process.env.PORT || 3000;
@@ -22,17 +27,17 @@ const port = process.env.PORT || 3000;
 app.use('/api/auth', authRoutes);
 app.use('/api/task', taskRoutes);
 
-app.get('/', (req, res) => {
-    res.render('index');
-});
+// app.get('/', (req, res) => {
+//     res.render('index');
+// });
 
-app.get('/signup', (req, res) => {
-    res.render('signup');
-});
+// app.get('/signup', (req, res) => {
+//     res.render('signup');
+// });
 
-app.get('/login', (req, res) => {
-    res.render('login');
-});
+// app.get('/login', (req, res) => {
+//     res.render('login');
+// });
 
 
 connectDB()

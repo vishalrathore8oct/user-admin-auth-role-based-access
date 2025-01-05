@@ -4,7 +4,7 @@ const { getAllTasksByUser, getAllTasksByAdmin, createTaskByUser } = require('../
 const verifyToken = require('../middlewares/auth.middleware.js');
 const roleMiddleware = require('../middlewares/role.middleware.js');
 
-router.get('/user', verifyToken, roleMiddleware(['user', 'admin']), getAllTasksByUser);
+router.get('/user', verifyToken, roleMiddleware(['user']), getAllTasksByUser);
 router.get('/admin', verifyToken, roleMiddleware(['admin']), getAllTasksByAdmin);
 
 router.post('/create', verifyToken, roleMiddleware(['user', 'admin']), createTaskByUser);

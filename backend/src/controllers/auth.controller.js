@@ -4,19 +4,17 @@ const jwt = require('jsonwebtoken');
 const registerUser = async (req, res) => {
     try {
         const { name, email, password} = req.body;
-
         // console.log(name, email, password);
 
         if (!name || !email || !password) {
-            return res.status(400).send('Please fill all the fields');
+            return res.status(400).josn({ message: 'Please fill all the fields' });
         }
 
         const userExist = await User.findOne({ email });
-
         // console.log(userExist);
 
         if (userExist) {
-            return res.status(400).send('User already exist');
+            return res.status(400).json({ message: 'User with this email already exists' });
         }
 
         const user = await User.create({
@@ -25,11 +23,9 @@ const registerUser = async (req, res) => {
             password
         });
 
-        // res.status(201).json({ message: 'User registered successfully', id: user._id, name: user.name, email: user.email, role: user.role });
+        res.status(201).json({ success: true ,message: 'User registered successfully', id: user._id, name: user.name, email: user.email, role: user.role });
 
-        // res.redirect('index', { message: 'User registered successfully', id: user._id, name: user.name, email: user.email, role: user.role });
-
-        res.redirect('/');
+        // res.redirect('/');
 
     } catch (error) {
 
@@ -48,29 +44,28 @@ const loginUser = async (req, res) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(400).send('Please fill all the fields');
+            return res.status(400).json({ message: 'Please fill all the fields' });
         }
 
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(400).send('Email does not exist');
+            return res.status(400).json({ message: 'User With this email does not exist' });
         }
 
         const passwordMatch = await user.comparePassword(password);
 
         if (!passwordMatch) {
-            return res.status(400).send('Password does not match');
+            return res.status(400).json({ message: 'Invalid password' });
         }
 
         const token = jwt.sign({ id: user._id, name: user.name, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        // res.status(200).json({ message: 'User logged in successfully', token });
-
-        // res.render('index', { message: 'User logged in successfully', token });
-
-        res.status(200).cookie('token', token, { httpOnly: true });
-        res.redirect('/');
+        
+        res.status(200).json({ success: true, message: 'User logged in successfully', token: token});
+        
+        // res.cookie('token', token, { httpOnly: true });
+        // res.redirect('/');
 
     } catch (error) {
 
