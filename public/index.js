@@ -38,6 +38,7 @@ const fetchTasks = async () => {
         });
     } catch (error) {
         console.error('Error fetching user tasks:', error);
+        alert('You are not authorized to view User Tasks');
     }
 }
 
@@ -74,7 +75,7 @@ const fetchAdminTasks = async () => {
         });
     } catch (error) {
         console.error('Error fetching admin tasks:', error);
-        alert('You are not authorized to view Admin this page');
+        alert('You are not authorized to view Admin Tasks');
     }
 }
 
