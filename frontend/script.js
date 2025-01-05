@@ -122,19 +122,23 @@ function fetchAdminTasks() {
 
 function displayTasks(containerId, tasks) {
     const userData = parseJwt(getCookie('token'));
-    // console.log(userData);
+    console.log(userData);
     const container = document.getElementById(containerId);
     container.innerHTML = '';
-    const heading = document.querySelector('h1') 
+    const heading = document.querySelector('h2') 
     heading.innerHTML = `${userData.role.toUpperCase()} Dashboard - Welcome ${userData.name}`;
     tasks.forEach(task => {
+        // console.log(task);
         const taskElement = document.createElement('div');
         const titleElement = document.createElement('p');
+        const ownerElement = document.createElement('p');
         const descriptionElement = document.createElement('p'); 
         titleElement.innerHTML = `<strong>Title:</strong> ${task.title}`;
         descriptionElement.innerHTML = `<strong>Description:</strong> ${task.description}`;
+        ownerElement.innerHTML = `<strong>Created By:</strong> ${task.name}`;
         taskElement.appendChild(titleElement);
         taskElement.appendChild(descriptionElement);
+        taskElement.appendChild(ownerElement);
         container.appendChild(taskElement);
     });
 }
