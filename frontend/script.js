@@ -92,7 +92,7 @@ function fetchUserTasks() {
     .then(response => response.json())
     .then(data => {
         displayTasks('user-tasks', data.tasks);
-        console.log(data);
+        // console.log(data);
         
     })
     .catch(error => {
@@ -112,7 +112,7 @@ function fetchAdminTasks() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
+        // console.log(data);
         displayTasks('admin-tasks', data.tasks);
     })
     .catch(error => {
@@ -121,11 +121,20 @@ function fetchAdminTasks() {
 }
 
 function displayTasks(containerId, tasks) {
+    const userData = parseJwt(getCookie('token'));
+    // console.log(userData);
     const container = document.getElementById(containerId);
     container.innerHTML = '';
+    const heading = document.querySelector('h1') 
+    heading.innerHTML = `${userData.role.toUpperCase()} Dashboard - Welcome ${userData.name}`;
     tasks.forEach(task => {
         const taskElement = document.createElement('div');
-        taskElement.textContent = task.title;
+        const titleElement = document.createElement('p');
+        const descriptionElement = document.createElement('p'); 
+        titleElement.innerHTML = `<strong>Title:</strong> ${task.title}`;
+        descriptionElement.innerHTML = `<strong>Description:</strong> ${task.description}`;
+        taskElement.appendChild(titleElement);
+        taskElement.appendChild(descriptionElement);
         container.appendChild(taskElement);
     });
 }
